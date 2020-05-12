@@ -1,0 +1,1 @@
+# university-statistic-core-library
