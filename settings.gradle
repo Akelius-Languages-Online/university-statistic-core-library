@@ -1,0 +1,4 @@
+rootProject.name = 'university-statistic-core-library'
+
+
+enableFeaturePreview('GRADLE_METADATA')

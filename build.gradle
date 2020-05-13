@@ -1,0 +1,97 @@
+plugins {
+    id 'org.jetbrains.kotlin.multiplatform' version '1.3.72'
+    id 'maven-publish'
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        credentials {
+            username System.getenv("ARTIFACTORY_USERNAME")
+            password System.getenv("ARTIFACTORY_PASSWORD")
+        }
+        url "${artifactory_context_url}/libs-release"
+    }
+    maven {
+        credentials {
+            username System.getenv("ARTIFACTORY_USERNAME")
+            password System.getenv("ARTIFACTORY_PASSWORD")
+        }
+        url "${artifactory_context_url}/libs-snapshot"
+    }
+    mavenCentral()
+}
+
+publishing {
+    repositories {
+        maven {
+            credentials {
+                username System.getenv("ARTIFACTORY_USERNAME")
+                password System.getenv("ARTIFACTORY_PASSWORD")
+            }
+            url = "${artifactory_context_url}/libs-release-local"
+        }
+    }
+}
+
+group 'com.akelius.university'
+version '0.0.2'
+
+
+
+sourceCompatibility = '1.8'
+
+kotlin {
+    jvm()
+    js {
+// On an empty project:
+//2020-05-13T17:29:13.489+0200 [QUIET] [system.out] 13 05 2020 17:29:09.426:WARN [launcher]: ChromeHeadless have not captured in 60000 ms, killing.
+//2020-05-13T17:29:13.489+0200 [QUIET] [system.out]
+//2020-05-13T17:29:13.489+0200 [QUIET] [system.out] 13 05 2020 17:29:11.429:WARN [launcher]: ChromeHeadless was not killed in 2000 ms, sending SIGKILL.
+//2020-05-13T17:29:13.489+0200 [QUIET] [system.out]
+//2020-05-13T17:29:13.490+0200 [QUIET] [system.out] 13 05 2020 17:29:13.430:WARN [launcher]: ChromeHeadless was not killed by SIGKILL in 2000 ms, continuing.
+//2020-05-13T17:29:13.490+0200 [QUIET] [system.out]
+//2020-05-13T17:29:13.490+0200 [QUIET] [system.out]
+//2020-05-13T17:29:13.490+0200 [ERROR] [org.jetbrains.kotlin.gradle.tasks.testing] java.lang.IllegalStateException: command '/Users/user13mar20/.gradle/nodejs/node-v12.14.0-darwin-x64/bin/node' exited with errors (exit code: 1)
+
+//        browser {
+//        }
+        nodejs {
+        }
+    }
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation kotlin('stdlib-common')
+            }
+        }
+        commonTest {
+            dependencies {
+                implementation kotlin('test-common')
+                implementation kotlin('test-annotations-common')
+            }
+        }
+        jvmMain {
+            dependencies {
+                implementation kotlin('stdlib-jdk8')
+            }
+        }
+        jvmTest {
+            dependencies {
+                implementation kotlin('test')
+                implementation kotlin('test-junit')
+            }
+        }
+
+        jsMain {
+            dependencies {
+                implementation kotlin('stdlib-js')
+            }
+        }
+        jsTest {
+            dependencies {
+                implementation kotlin('test-js')
+            }
+        }
+    }
+}
