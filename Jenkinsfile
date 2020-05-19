@@ -73,11 +73,9 @@ timeout(time: 10, unit: 'MINUTES') {
                                 withCredentials([usernamePassword(credentialsId: 'artifactory.lae', passwordVariable: 'ARTIFACTORY_PASSWORD', usernameVariable: 'ARTIFACTORY_USERNAME')]) {
                                     sh "echo ${ARTIFACTORY_PASSWORD} > artifactoryPw"
                                     sh "echo ${ARTIFACTORY_USERNAME} > artifactoryUser"
-                                    sh "echo ${currentBuild.number} > currentBuild"
                                     sh "export ARTIFACTORY_PASSWORD=\$(cat artifactoryPw) && export ARTIFACTORY_USERNAME=\$(cat artifactoryUser)"
-                                    sh "export MASTER_BRANCH_BUILD_VERSION=\$(cat currentBuild)"
 
-                                    sh "gradle clean publish --stacktrace"
+                                    sh "gradle clean publish -PbuildVersion=${currentBuild.number} --stacktrace"
                                     sh "rm artifactoryPw && rm artifactoryUser"
                                 }
                                 archiveArtifacts artifacts: '**/build/libs/*.jar', fingerprint: true

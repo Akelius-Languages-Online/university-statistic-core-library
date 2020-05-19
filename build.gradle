@@ -33,13 +33,10 @@ publishing {
         }
     }
 }
-def buildVersion = System.getenv("MASTER_BRANCH_BUILD_VERSION")
-println("Build version before " + buildVersion)
-if (buildVersion == null || buildVersion.isEmpty()) {
-    buildVersion = "LOCAL-Snapshot"
-}
-println("Build version after " + buildVersion)
 
+if (!project.hasProperty("buildVersion")) {
+    ext.buildVersion = "LOCAL-Snapshot"
+}
 group 'com.akelius.university'
 version '0.0.' + buildVersion
 
