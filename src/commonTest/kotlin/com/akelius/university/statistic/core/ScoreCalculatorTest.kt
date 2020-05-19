@@ -8,17 +8,18 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class ScoreCalculatorTest {
-    private val epsilon = 0.0001
+    private val calculationPrecision = 0.0001
+    private val calculator = ScoreCalculator()
 
     @Test
     fun singleSlideCalculatesScoreSuccessfully() {
         val slideshowScore = SlideshowScore(listOf(SlideScore(isCorrect = true, score = 1.0)))
 
-        val result = ScoreCalculator().calculate(slideshowScore)
+        val result = calculator.calculate(slideshowScore)
         assertEquals(5, result.score)
         assertEquals(1, result.totalAnswersCount)
         assertEquals(1, result.correctAnswersCount)
-        assertTrue(abs(1.0 - result.scaledScore) < epsilon)
+        assertTrue(abs(1.0 - result.scaledScore) < calculationPrecision)
     }
 
     @Test
@@ -30,11 +31,11 @@ class ScoreCalculatorTest {
             )
         )
 
-        val result = ScoreCalculator().calculate(slideshowScore)
+        val result = calculator.calculate(slideshowScore)
         assertEquals(5, result.score)
         assertEquals(2, result.totalAnswersCount)
         assertEquals(2, result.correctAnswersCount)
-        assertTrue(abs(1.0 - result.scaledScore) < epsilon)
+        assertTrue(abs(1.0 - result.scaledScore) < calculationPrecision)
     }
 
     @Test
@@ -46,19 +47,19 @@ class ScoreCalculatorTest {
             )
         )
 
-        val result = ScoreCalculator().calculate(slideshowScore)
+        val result = calculator.calculate(slideshowScore)
         assertEquals(0, result.score)
         assertEquals(2, result.totalAnswersCount)
         assertEquals(0, result.correctAnswersCount)
 
         val expectedScore = 0.79 / 2.0
 
-        assertTrue(abs(result.scaledScore - expectedScore) < epsilon)
+        assertTrue(abs(result.scaledScore - expectedScore) < calculationPrecision)
     }
 
     @Test
     fun doesNotFailOnNoSlides() {
-        val result = ScoreCalculator().calculate(SlideshowScore(emptyList()))
+        val result = calculator.calculate(SlideshowScore(emptyList()))
 
         assertEquals(0, result.score)
         assertEquals(0, result.totalAnswersCount)
@@ -79,12 +80,12 @@ class ScoreCalculatorTest {
             )
         )
 
-        val result = ScoreCalculator().calculate(slideshowScore)
+        val result = calculator.calculate(slideshowScore)
 
         assertEquals(1, result.score)
         assertEquals(4, result.totalAnswersCount)
         assertEquals(3, result.correctAnswersCount)
-        assertTrue(abs(0.836 - result.scaledScore) < epsilon)
+        assertTrue(abs(0.836 - result.scaledScore) < calculationPrecision)
     }
 
     @Test
@@ -98,12 +99,12 @@ class ScoreCalculatorTest {
             )
         )
 
-        val result = ScoreCalculator().calculate(slideshowScore)
+        val result = calculator.calculate(slideshowScore)
 
         assertEquals(4, result.score)
         assertEquals(4, result.totalAnswersCount)
         assertEquals(3, result.correctAnswersCount)
-        assertTrue(abs(0.96886792452 - result.scaledScore) < epsilon)
+        assertTrue(abs(0.96886792452 - result.scaledScore) < calculationPrecision)
     }
 
     @Test
@@ -115,12 +116,12 @@ class ScoreCalculatorTest {
             )
         )
 
-        val result = ScoreCalculator().calculate(slideshowScore)
+        val result = calculator.calculate(slideshowScore)
 
         assertEquals(3, result.score)
         assertEquals(2, result.totalAnswersCount)
         assertEquals(1, result.correctAnswersCount)
-        assertTrue(abs(0.90697674 - result.scaledScore) < epsilon)
+        assertTrue(abs(0.90697674 - result.scaledScore) < calculationPrecision)
     }
 
     @Test
@@ -130,12 +131,12 @@ class ScoreCalculatorTest {
                 SlideScore(isCorrect = false, score = -100.0, maxScore = 100.0, weight = 0.01)
             )
         )
-        val result = ScoreCalculator().calculate(slideshowScore)
+        val result = calculator.calculate(slideshowScore)
 
         assertEquals(0, result.score)
         assertEquals(1, result.totalAnswersCount)
         assertEquals(0, result.correctAnswersCount)
-        assertTrue(abs(0.0 - result.scaledScore) < epsilon)
+        assertTrue(abs(0.0 - result.scaledScore) < calculationPrecision)
     }
 
     @Test
@@ -154,11 +155,11 @@ class ScoreCalculatorTest {
             )
         )
 
-        val result = ScoreCalculator().calculate(slideshowScore)
+        val result = calculator.calculate(slideshowScore)
 
         assertEquals(2, result.score)
         assertEquals(7, result.totalAnswersCount)
         assertEquals(6, result.correctAnswersCount)
-        assertTrue(abs(0.8778625 - result.scaledScore) < epsilon)
+        assertTrue(abs(0.8778625 - result.scaledScore) < calculationPrecision)
     }
 }

@@ -8,7 +8,7 @@ import kotlin.math.abs
 class ScoreCalculator {
 
     companion object {
-        const val epsilon = 0.00000001
+        const val calculationPrecision = 0.00000001
     }
 
     fun calculate(score: SlideshowScore): SlideshowScoreResult {
@@ -28,7 +28,7 @@ class ScoreCalculator {
     }
 
     private fun calculateScaledScore(userScore: Double, maxScore: Double): Double {
-        return if (maxScore < epsilon || userScore < epsilon) {
+        return if (maxScore < calculationPrecision || userScore < calculationPrecision) {
             0.0
         } else {
             userScore / maxScore
@@ -64,7 +64,7 @@ class ScoreCalculator {
             userScore += score * weight
             maxScore += maxSlideScore * weight
 
-            if (abs(weight) > epsilon) {
+            if (abs(weight) > calculationPrecision) {
                 if (correct) {
                     correctAnswersCount++
                 }
