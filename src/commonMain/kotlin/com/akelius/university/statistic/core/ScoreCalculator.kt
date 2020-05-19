@@ -1,48 +1,75 @@
 package com.akelius.university.statistic.core
 
+import com.akelius.university.statistic.core.dto.SlideScore
 import com.akelius.university.statistic.core.dto.SlideshowScoreResult
 import com.akelius.university.statistic.core.dto.SlideshowScore
+import kotlin.math.abs
 
 class ScoreCalculator {
 
-    // TODO: split calculation of separated slides as this data needs to be stored in statements in BE
-    // This would mean that different interface with different input/result types might be as well exposed
+    companion object {
+        const val calculationPrecision = 0.00000001
+    }
+
     fun calculate(score: SlideshowScore): SlideshowScoreResult {
-        var binaryWeightedScore = 0.0
-        var scaledWeightedScore = 0.0
+        val calculation = Calculation()
 
-        var maxBinaryScore = 0.0
-        var maxScaledScore = 0.0
+        score.slideScores.asSequence().forEach { calculation.addSlideScore(it) }
 
-        score.answers.asSequence()
-            .forEach {
-                if (it.score == null) {
-                    val binaryScore = if (it.correct) {
-                        1
-                    } else {
-                        0
-                    }
-                    binaryWeightedScore += binaryScore * it.weight
-                    maxBinaryScore += 1.0 * it.weight
-                } else {
-                    scaledWeightedScore += it.score * it.weight
-                    maxScaledScore += it.maxScore * it.weight
-                    //TODO: consider weight 0.0 and divide final score
-                }
-
-            }
-
-        val userScore = binaryWeightedScore + scaledWeightedScore
-        val maxScore = maxBinaryScore + maxScaledScore
-
-        val scaledScore = userScore / maxScore
+        val scaledScore = calculateScaledScore(calculation.userScore, calculation.maxScore)
         val scoreInFifths = FifthGradeCalculator.scoreToFifths(scaledScore)
 
         return SlideshowScoreResult(
-            scoreInFifths,
-            scaledScore,
-            0, //TODO: calculate as this number are used in FE
-            10
+            score = scoreInFifths,
+            scaledScore = scaledScore,
+            correctAnswersCount = calculation.correctAnswersCount,
+            totalAnswersCount = calculation.totalAnswers
         )
+    }
+
+    private fun calculateScaledScore(userScore: Double, maxScore: Double): Double {
+        return if (maxScore < calculationPrecision || userScore < calculationPrecision) {
+            0.0
+        } else {
+            userScore / maxScore
+        }
+    }
+
+    private data class Calculation(
+        var userScore: Double = 0.0,
+        var maxScore: Double = 0.0,
+
+        var correctAnswersCount: Int = 0,
+        var totalAnswers: Int = 0
+    ) {
+
+        fun addSlideScore(slideScore: SlideScore) {
+            if (slideScore.score == null) {
+                addBinaryScore(slideScore.isCorrect, slideScore.weight)
+            } else {
+                addScore(slideScore.isCorrect, slideScore.score, slideScore.maxScore, slideScore.weight)
+            }
+        }
+
+        private fun addBinaryScore(correct: Boolean, weight: Double) {
+            val binaryScore = if (correct) {
+                1.0
+            } else {
+                0.0
+            }
+            addScore(correct, binaryScore, 1.0, weight)
+        }
+
+        private fun addScore(correct: Boolean, score: Double, maxSlideScore: Double, weight: Double) {
+            userScore += score * weight
+            maxScore += maxSlideScore * weight
+
+            if (abs(weight) > calculationPrecision) {
+                if (correct) {
+                    correctAnswersCount++
+                }
+                totalAnswers++
+            }
+        }
     }
 }
