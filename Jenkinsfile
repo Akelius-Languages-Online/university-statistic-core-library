@@ -73,6 +73,7 @@ timeout(time: 10, unit: 'MINUTES') {
                                 withCredentials([usernamePassword(credentialsId: 'artifactory.lae', passwordVariable: 'ARTIFACTORY_PASSWORD', usernameVariable: 'ARTIFACTORY_USERNAME')]) {
                                     sh "echo ${ARTIFACTORY_PASSWORD} > artifactoryPw"
                                     sh "echo ${ARTIFACTORY_USERNAME} > artifactoryUser"
+                                    sh "export MASTER_BRANCH_BUILD_VERSION=${currentBuild}"
                                     sh "export ARTIFACTORY_PASSWORD=\$(cat artifactoryPw) && export ARTIFACTORY_USERNAME=\$(cat artifactoryUser)"
                                     sh "gradle clean publish --stacktrace"
                                     sh "rm artifactoryPw && rm artifactoryUser"
