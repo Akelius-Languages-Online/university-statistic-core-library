@@ -34,7 +34,11 @@ publishing {
     }
 }
 def buildVersion = System.getenv("MASTER_BRANCH_BUILD_VERSION")
-buildVersion = (buildVersion == null || buildVersion.isEmpty()) ? "LOCAL-Snapshot" : buildVersion
+println("Build version before " + buildVersion)
+if (buildVersion == null || buildVersion.isEmpty()) {
+    buildVersion = "LOCAL-Snapshot"
+}
+println("Build version after " + buildVersion)
 
 group 'com.akelius.university'
 version '0.0.' + buildVersion
