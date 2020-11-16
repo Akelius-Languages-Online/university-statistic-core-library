@@ -32,7 +32,7 @@ timeout(time: 10, unit: 'MINUTES') {
                         podAnnotation(key: 'kube-slack/slack-channel', value: '#university-k8s')
                 ],
                 cloud: 'k8s-ci-cd',
-                namespace: 'business-school', containers: [
+                namespace: 'lae-build', containers: [
                 containerTemplate(name: 'gradle', image: 'gradle:6.4-jdk8', ttyEnabled: true, command: 'cat',
                         resourceRequestCpu: '500m',
                         resourceLimitCpu: '1000m',
