@@ -3,12 +3,15 @@ package com.akelius.university.statistic.core
 import com.akelius.university.statistic.core.dto.SlideScore
 import com.akelius.university.statistic.core.dto.SlideshowScoreResult
 import com.akelius.university.statistic.core.dto.SlideshowScore
+import com.akelius.university.statistic.core.grade.calculator.DefaultFifthGradeCalculator
+import com.akelius.university.statistic.core.grade.calculator.GradeCalculator
 import kotlin.math.abs
 
 class ScoreCalculator {
 
     companion object {
         const val calculationPrecision = 0.00000001
+        val gradeCalculator = GradeCalculator()
     }
 
     fun calculate(score: SlideshowScore): SlideshowScoreResult {
@@ -17,7 +20,7 @@ class ScoreCalculator {
         score.slideScores.asSequence().forEach { calculation.addSlideScore(it) }
 
         val scaledScore = calculateScaledScore(calculation.userScore, calculation.maxScore)
-        val scoreInFifths = FifthGradeCalculator.scoreToFifths(scaledScore)
+        val scoreInFifths = gradeCalculator.scoreToFifths(score, scaledScore)
 
         return SlideshowScoreResult(
             score = scoreInFifths,
