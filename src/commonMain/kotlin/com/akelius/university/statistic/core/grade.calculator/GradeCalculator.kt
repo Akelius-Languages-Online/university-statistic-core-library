@@ -7,8 +7,8 @@ class GradeCalculator {
     private val defaultCalculator = DefaultFifthGradeCalculator()
     private val quizCalculator = QuizFifthGradeCalculator()
 
-    fun scoreToFifths(slideshowScore: SlideshowScore, score: Double): Int {
-        return if(slideshowScore.type == CalculationType.QUIZ) {
+    fun scoreToFifths(calculationType: CalculationType, score: Double): Int {
+        return if(calculationType == CalculationType.QUIZ) {
             quizCalculator.scoreToFifths(score)
         } else {
             defaultCalculator.scoreToFifths(score)

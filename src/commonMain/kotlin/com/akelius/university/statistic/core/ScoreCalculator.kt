@@ -20,7 +20,7 @@ class ScoreCalculator {
         score.slideScores.asSequence().forEach { calculation.addSlideScore(it) }
 
         val scaledScore = calculateScaledScore(calculation.userScore, calculation.maxScore)
-        val scoreInFifths = gradeCalculator.scoreToFifths(score, scaledScore)
+        val scoreInFifths = gradeCalculator.scoreToFifths(score.type, scaledScore)
 
         return SlideshowScoreResult(
             score = scoreInFifths,
