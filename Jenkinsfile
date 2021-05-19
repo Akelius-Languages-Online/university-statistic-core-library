@@ -5,13 +5,11 @@
 // with accessing the containers
 // We prepend the "AK_" prefix to avoid special characters as first char.
 String label = "AK_" + env.BUILD_TAG.replace("/", "_").replace("%2F", "_").replace("-", "_").replaceAll(" ", "").reverse().take(60).reverse()
-
-String slackChannel = '#university-pipelines'
 String currentStage = 'Setup'
 
 properties([
         // adjust thresholds as needed, but try to keep it as low as possible. This is already a good configuration.
-        buildDiscarder(logRotator(artifactDaysToKeepStr: '10', artifactNumToKeepStr: '5', daysToKeepStr: '10', numToKeepStr: '10')),
+        buildDiscarder(logRotator(artifactDaysToKeepStr: '360', artifactNumToKeepStr: '5', daysToKeepStr: '360', numToKeepStr: '10')),
         // disableConcurrentBuilds is mandatory when using Kubernetes or you should risk to broke everything
         disableConcurrentBuilds(),
         // this options force Jenkins to keep in memory build logs until the build is done
@@ -28,12 +26,13 @@ timeout(time: 10, unit: 'MINUTES') {
     timestamps {
         podTemplate(
                 label: label,
-                annotations: [
-                        podAnnotation(key: 'kube-slack/slack-channel', value: '#university-k8s')
-                ],
                 cloud: 'k8s-ci-cd',
-                namespace: 'lae-build', containers: [
-                containerTemplate(name: 'gradle', image: 'gradle:6.4-jdk8', ttyEnabled: true, command: 'cat',
+                inheritFrom: 'pod-base-configuration',
+                containers: [
+                    containerTemplate(name: 'gradle',
+                        image: 'gradle:6.4-jdk8',
+                        ttyEnabled: true,
+                        command: 'cat',
                         resourceRequestCpu: '500m',
                         resourceLimitCpu: '1000m',
                         resourceRequestMemory: '512Mi',
@@ -43,7 +42,6 @@ timeout(time: 10, unit: 'MINUTES') {
         ], volumes: [
                 hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
         ]) {
-
             node(label) {
                 try {
                     stage('Checkout') {
@@ -82,15 +80,7 @@ timeout(time: 10, unit: 'MINUTES') {
                             }
                         }
                     }
-
-                    String message = "Build <${env.BUILD_URL}|*${currentBuild.displayName}*> for *commons ${env.BRANCH_NAME}* successfuly deployed to artifactory :beer:"
-                    notifyOnSlack(message, slackChannel, 'good')
-
-
                 } catch (Throwable e) {
-                    String message = "@here Build <${env.BUILD_URL}|*${currentBuild.displayName}*> failed for *commons ${env.BRANCH_NAME}* at stage *${currentStage}* :scream_cat: \n${e.toString()}"
-                    notifyOnSlack(message, slackChannel, 'bad')
-
                     throw e
                 }
 
