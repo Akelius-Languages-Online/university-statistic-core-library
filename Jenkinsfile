@@ -22,7 +22,7 @@ def notifyOnSlack(String message, String channel, String color) {
     slackSend(message: message, channel: channel, color: color, token: "dm2VVI1A01G6iwYrfD5kBM5u")
 }
 
-timeout(time: 10, unit: 'MINUTES') {
+timeout(time: 60, unit: 'MINUTES') {
     timestamps {
         podTemplate(
                 label: label,
@@ -36,7 +36,7 @@ timeout(time: 10, unit: 'MINUTES') {
                         resourceRequestCpu: '500m',
                         resourceLimitCpu: '1000m',
                         resourceRequestMemory: '512Mi',
-                        resourceLimitMemory: '1.5Gi')
+                        resourceLimitMemory: '2Gi')
         ], envVars: [
                 envVar(key: 'BRANCH_NAME', value: env.BRANCH_NAME)
         ], volumes: [
@@ -58,7 +58,7 @@ timeout(time: 10, unit: 'MINUTES') {
                                 sh "echo ${ARTIFACTORY_PASSWORD} > artifactoryPw"
                                 sh "echo ${ARTIFACTORY_USERNAME} > artifactoryUser"
                                 sh "export ARTIFACTORY_PASSWORD=\$(cat artifactoryPw) && export ARTIFACTORY_USERNAME=\$(cat artifactoryUser)"
-                                sh "gradle clean allTests --stacktrace"
+                                sh "gradle clean allTests --stacktrace --info"
                                 sh "rm artifactoryPw && rm artifactoryUser"
                             }
                         }
