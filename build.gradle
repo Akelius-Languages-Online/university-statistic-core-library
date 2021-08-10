@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.kotlin.multiplatform' version '1.3.72'
+    id 'org.jetbrains.kotlin.multiplatform' version '1.5.21'
     id 'maven-publish'
 }
 
@@ -46,7 +46,7 @@ sourceCompatibility = '1.8'
 
 kotlin {
     jvm()
-    js {
+//    js {
 // On an empty project:
 //2020-05-13T17:29:13.489+0200 [QUIET] [system.out] 13 05 2020 17:29:09.426:WARN [launcher]: ChromeHeadless have not captured in 60000 ms, killing.
 //2020-05-13T17:29:13.489+0200 [QUIET] [system.out]
@@ -59,9 +59,9 @@ kotlin {
 
 //        browser {
 //        }
-        nodejs {
-        }
-    }
+//        nodejs {
+//        }
+//    }
     sourceSets {
         commonMain {
             dependencies {
@@ -86,15 +86,20 @@ kotlin {
             }
         }
 
-        jsMain {
-            dependencies {
-                implementation kotlin('stdlib-js')
-            }
-        }
-        jsTest {
-            dependencies {
-                implementation kotlin('test-js')
-            }
-        }
+//        jsMain {
+//            dependencies {
+//                implementation kotlin('stdlib-js')
+//            }
+//        }
+//        `JS Does not support such of tests` in Kotlin part of project... Why do we need it? XD
+//        > Task :compileTestKotlinJs FAILED
+//e: /Users/user13mar20/Source/university-statistic-core-library/src/commonTest/kotlin/com/akelius/university/statistic/core/monthly.race/RaceCalculatorTest.kt: (11, 5): Name contains illegal chars that can't appear in JavaScript identifier
+//e: /Users/user13mar20/Source/university-statistic-core-library/src/commonTest/kotlin/com/akelius/university/statistic/core/monthly.race/RaceCalculatorTest.kt: (41, 5): Name contains illegal chars that can't appear in JavaScript identifier
+//e: /Users/user13mar20/Source/university-statistic-core-library/src/commonTest/kotlin/com/akelius/university/statistic/core/monthly.race/RaceCalculatorTest.kt: (79, 5): Name contains illegal chars that can't appear in JavaScript identifier
+//        jsTest {
+//            dependencies {
+//                implementation kotlin('test-js')
+//            }
+//        }
     }
 }
