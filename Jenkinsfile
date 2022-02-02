@@ -73,7 +73,7 @@ timeout(time: 60, unit: 'MINUTES') {
                                     sh "echo ${ARTIFACTORY_USERNAME} > artifactoryUser"
                                     sh "export ARTIFACTORY_PASSWORD=\$(cat artifactoryPw) && export ARTIFACTORY_USERNAME=\$(cat artifactoryUser)"
 
-                                    sh "gradle clean publish -PbuildVersion=${currentBuild.number} --stacktrace"
+                                    sh "gradle clean publish -PbuildVersion=${currentBuild.startTimeInMillis} --stacktrace"
                                     sh "rm artifactoryPw && rm artifactoryUser"
                                 }
                                 archiveArtifacts artifacts: '**/build/libs/*.jar', fingerprint: true
