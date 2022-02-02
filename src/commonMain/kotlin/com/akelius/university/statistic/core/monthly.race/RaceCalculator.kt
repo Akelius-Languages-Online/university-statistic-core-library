@@ -19,8 +19,7 @@ class RaceCalculator(private val namesGenerator: NamesGenerator = NamesGenerator
     fun race(params: RaceParameters): RaceResult {
         val names = namesGenerator.generate(
             6,
-            params.randomizationSeed.currentYear,
-            params.randomizationSeed.currentMonth
+            params.randomizationSeed
         )
         val random = Random(
             params.randomizationSeed.currentYear
