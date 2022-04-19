@@ -1,7 +1,6 @@
 package com.akelius.university.statistic.core.grade.calculator
 
 import com.akelius.university.statistic.core.dto.CalculationType
-import com.akelius.university.statistic.core.dto.SlideshowScore
 
 class GradeCalculator {
     private val defaultCalculator = DefaultFifthGradeCalculator()

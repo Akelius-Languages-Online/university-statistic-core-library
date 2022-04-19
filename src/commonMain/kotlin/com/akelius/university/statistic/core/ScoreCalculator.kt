@@ -16,8 +16,13 @@ class ScoreCalculator {
 
     fun calculate(score: SlideshowScore): SlideshowScoreResult {
         val calculation = Calculation()
+        val scoreOverride = if (score.slideScores.find { it.weight > 0 } == null) {
+            1.0
+        } else {
+            null
+        }
 
-        score.slideScores.asSequence().forEach { calculation.addSlideScore(it) }
+        score.slideScores.asSequence().forEach { calculation.addSlideScore(it, scoreOverride) }
 
         val scaledScore = calculateScaledScore(calculation.userScore, calculation.maxScore)
         val scoreInFifths = gradeCalculator.scoreToFifths(score.type, scaledScore)
@@ -46,11 +51,11 @@ class ScoreCalculator {
         var totalAnswers: Int = 0
     ) {
 
-        fun addSlideScore(slideScore: SlideScore) {
+        fun addSlideScore(slideScore: SlideScore, weightOverride: Double?) {
             if (slideScore.score == null) {
-                addBinaryScore(slideScore.isCorrect, slideScore.weight)
+                addBinaryScore(slideScore.isCorrect, weightOverride?: slideScore.weight)
             } else {
-                addScore(slideScore.isCorrect, slideScore.score, slideScore.maxScore, slideScore.weight)
+                addScore(slideScore.isCorrect, slideScore.score, slideScore.maxScore, weightOverride?: slideScore.weight)
             }
         }
 
