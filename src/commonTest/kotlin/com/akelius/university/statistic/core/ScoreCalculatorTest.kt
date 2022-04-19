@@ -162,4 +162,30 @@ class ScoreCalculatorTest {
         assertEquals(6, result.correctAnswersCount)
         assertTrue(abs(0.8778625 - result.scaledScore) < calculationPrecision)
     }
+
+    @Test
+    fun weightsDefaultsForNoWeightsInPresentationSlide() {
+        val slideshowScore = SlideshowScore(
+            listOf(
+                SlideScore(isCorrect = false, weight = 0.0, score = 0.0, maxScore = 1.0),
+
+                SlideScore(isCorrect = true, weight = 0.0),
+                SlideScore(isCorrect = true, weight = 0.0),
+                SlideScore(isCorrect = true, weight = 0.0),
+                SlideScore(isCorrect = true, weight = 0.0, score = 1.0, maxScore = 1.0),
+                SlideScore(isCorrect = true, weight = 0.0, score = 1.0, maxScore = 1.0),
+                SlideScore(isCorrect = true, weight = 0.0, score = 1.0, maxScore = 1.0),
+                SlideScore(isCorrect = true, weight = 0.0, score = 1.0, maxScore = 1.0),
+                SlideScore(isCorrect = true, weight = 0.0, score = 1.0, maxScore = 1.0),
+                SlideScore(isCorrect = true, weight = 0.0, score = 1.0, maxScore = 1.0)
+            )
+        )
+
+        val result = calculator.calculate(slideshowScore)
+
+        assertEquals(3, result.score)
+        assertEquals(10, result.totalAnswersCount)
+        assertEquals(9, result.correctAnswersCount)
+        assertTrue(abs(0.90 - result.scaledScore) < calculationPrecision)
+    }
 }
