@@ -1,8 +1,6 @@
 package com.akelius.university.statistic.core
 
 import com.akelius.university.statistic.core.dto.CalculationType
-import com.akelius.university.statistic.core.dto.SlideshowScore
-import com.akelius.university.statistic.core.grade.calculator.DefaultFifthGradeCalculator
 import com.akelius.university.statistic.core.grade.calculator.GradeCalculator
 import kotlin.test.Test
 import kotlin.test.assertEquals
