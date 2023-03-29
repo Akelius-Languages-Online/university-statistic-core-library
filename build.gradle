@@ -38,7 +38,7 @@ if (!project.hasProperty("buildVersion")) {
     ext.buildVersion = "LOCAL-Snapshot"
 }
 group 'com.akelius.university'
-version '1.0.' + buildVersion
+version '1.1.' + buildVersion
 
 
 
