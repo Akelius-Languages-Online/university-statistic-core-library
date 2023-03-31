@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
 class ScoreCalculatorTestJVM {
     @Test
     fun success() {
-        val slideshowScore = SlideshowScore(listOf(SlideScore(isCorrect = true, score = 1.0)))
+        val slideshowScore = SlideshowScore(listOf(SlideScore(isCorrect = true, score = 1.0)), false)
 
         val result = ScoreCalculator().calculate(slideshowScore)
         assertEquals(5, result.score)

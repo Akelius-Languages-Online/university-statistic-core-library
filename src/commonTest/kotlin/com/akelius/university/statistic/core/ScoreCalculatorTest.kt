@@ -14,7 +14,7 @@ class ScoreCalculatorTest {
 
     @Test
     fun singleSlideCalculatesScoreSuccessfully() {
-        val slideshowScore = SlideshowScore(listOf(SlideScore(isCorrect = true, score = 1.0)))
+        val slideshowScore = SlideshowScore(listOf(SlideScore(isCorrect = true, score = 1.0)), false)
 
         val result = calculator.calculate(slideshowScore)
         assertEquals(5, result.score)
@@ -32,7 +32,7 @@ class ScoreCalculatorTest {
             SlideScore(isCorrect = true, score = 1.0, weight = 0.0),
             SlideScore(isCorrect = true, score = 1.0, weight = 0.0),
             SlideScore(isCorrect = true, score = 1.0, weight = 0.0)
-        ))
+        ), false)
 
         val result = calculator.calculate(slideshowScore)
         assertEquals(5, result.score)
@@ -50,7 +50,7 @@ class ScoreCalculatorTest {
             SlideScore(isCorrect = true, score = 1.0, weight = 0.0),
             SlideScore(isCorrect = true, score = 1.0, weight = 0.0),
             SlideScore(isCorrect = true, score = 1.0, weight = 0.0)
-        ))
+        ), false)
 
         val result = calculator.calculate(slideshowScore)
         assertEquals(0, result.score)
@@ -65,7 +65,7 @@ class ScoreCalculatorTest {
             listOf(
                 SlideScore(isCorrect = true, score = 1.0),
                 SlideScore(isCorrect = true)
-            )
+            ), false
         )
 
         val result = calculator.calculate(slideshowScore)
@@ -78,20 +78,75 @@ class ScoreCalculatorTest {
     @Test
     fun mistakeBasedCalculationSuccess() {
         val slideshowScore = SlideshowScore(
-            type = CalculationType.MISTAKE,
             slideScores = listOf(
                 SlideScore(isCorrect = false, score = null),
                 SlideScore(isCorrect = false, score = null),
                 SlideScore(isCorrect = true, score = null),
                 SlideScore(isCorrect = true, score = null),
                 SlideScore(isCorrect = true, score = null)
-            )
+            ), false
         )
 
         val result = calculator.calculate(slideshowScore)
         assertEquals(3, result.score)
         assertEquals(5, result.totalAnswersCount)
         assertEquals(3, result.correctAnswersCount)
+    }
+
+    @Test
+    fun presentationScoreCalculatedCorrectly() {
+        val slideshowScore = SlideshowScore(
+            slideScores = listOf(
+                SlideScore(isCorrect = false, score = 0.0, weight = 0.0),
+                SlideScore(isCorrect = false, score = 0.0, weight = 0.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 0.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 0.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 0.0)
+            ), false
+        )
+
+        val result = calculator.calculate(slideshowScore)
+        assertEquals(5, result.score)
+        assertEquals(0, result.totalAnswersCount)
+        assertEquals(0, result.correctAnswersCount)
+        assertEquals(1.0, result.scaledScore)
+    }
+
+    @Test
+    fun quizScoreCalculatedCorrectly() {
+        val slideshowScore = SlideshowScore(
+            slideScores = listOf(
+                SlideScore(isCorrect = false, score = 0.0, weight = 1.0),
+                SlideScore(isCorrect = false, score = 0.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+
+                SlideScore(isCorrect = false, score = 0.0, weight = 1.0),
+                SlideScore(isCorrect = false, score = 0.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+
+                SlideScore(isCorrect = false, score = 0.0, weight = 1.0),
+                SlideScore(isCorrect = false, score = 0.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+
+                SlideScore(isCorrect = false, score = 0.0, weight = 1.0),
+                SlideScore(isCorrect = false, score = 0.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0)
+            ), true
+        )
+
+        val result = calculator.calculate(slideshowScore)
+        assertEquals(1, result.score)
+        assertEquals(20, result.totalAnswersCount)
+        assertEquals(12, result.correctAnswersCount)
+        assertEquals(0.6, result.scaledScore)
     }
 
     @Test
@@ -121,7 +176,7 @@ class ScoreCalculatorTest {
                 SlideScore(isCorrect = false),
                 SlideScore(isCorrect = false, score = 0.79),
                 SlideScore(isCorrect = false)
-            )
+            ), false
         )
 
         val result = calculator.calculate(slideshowScore)
@@ -136,12 +191,12 @@ class ScoreCalculatorTest {
 
     @Test
     fun doesNotFailOnNoSlides() {
-        val result = calculator.calculate(SlideshowScore(emptyList()))
+        val result = calculator.calculate(SlideshowScore(emptyList(), false))
 
-        assertEquals(0, result.score)
+        assertEquals(5, result.score)
         assertEquals(0, result.totalAnswersCount)
         assertEquals(0, result.correctAnswersCount)
-        assertEquals(0.0, result.scaledScore)
+        assertEquals(1.0, result.scaledScore)
     }
 
     @Test
@@ -178,7 +233,7 @@ class ScoreCalculatorTest {
                 SlideScore(isCorrect = true, weight = 0.1),
                 SlideScore(isCorrect = false),
                 SlideScore(isCorrect = true, weight = 0.0)
-            )
+            ), false
         )
 
         val result = calculator.calculate(slideshowScore)
@@ -216,7 +271,7 @@ class ScoreCalculatorTest {
                 SlideScore(isCorrect = true, score = 1.0),
                 SlideScore(isCorrect = true, score = 1.0),
                 SlideScore(isCorrect = true, score = 1.0)
-            )
+            ), false
         )
 
         val result = calculator.calculate(slideshowScore)
@@ -251,7 +306,7 @@ class ScoreCalculatorTest {
                 SlideScore(isCorrect = true, weight = 20.5),
                 SlideScore(isCorrect = false, score = -100.0, maxScore = 100.0, weight = 0.01),
                 SlideScore(isCorrect = true, weight = 20.5)
-            )
+            ), false
         )
 
         val result = calculator.calculate(slideshowScore)
@@ -267,14 +322,14 @@ class ScoreCalculatorTest {
         val slideshowScore = SlideshowScore(
             listOf(
                 SlideScore(isCorrect = false, score = -100.0, maxScore = 100.0, weight = 0.01)
-            )
+            ), false
         )
         val result = calculator.calculate(slideshowScore)
 
         assertEquals(0, result.score)
         assertEquals(1, result.totalAnswersCount)
         assertEquals(0, result.correctAnswersCount)
-        assertTrue(abs(0.0 - result.scaledScore) < calculationPrecision)
+        assertEquals(-1.0, result.scaledScore)
     }
 
     @Test
@@ -315,7 +370,7 @@ class ScoreCalculatorTest {
                 SlideScore(isCorrect = true, score = 80.0, weight = 0.0, maxScore = 100.0),
                 SlideScore(isCorrect = true, score = 80.0, weight = 0.0, maxScore = 100.0),
                 SlideScore(isCorrect = true, score = 80.0, weight = 0.0, maxScore = 100.0)
-            )
+            ), false
         )
 
         val result = calculator.calculate(slideshowScore)
