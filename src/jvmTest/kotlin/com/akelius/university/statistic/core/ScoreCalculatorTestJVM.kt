@@ -13,4 +13,12 @@ class ScoreCalculatorTestJVM {
         val result = ScoreCalculator().calculate(slideshowScore)
         assertEquals(5, result.score)
     }
+
+    @Test
+    fun successWithArgumentForMultipleTests() {
+        val slideshowScore = SlideshowScore(listOf(SlideScore(isCorrect = true, score = 1.0)), false, "TEST_GRAMMAR")
+
+        val result = ScoreCalculator().calculate(slideshowScore)
+        assertEquals(5, result.score)
+    }
 }
