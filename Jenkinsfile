@@ -19,7 +19,9 @@ properties([
 ])
 
 def notifyOnSlack(String message, String channel, String color) {
-    slackSend(message: message, channel: channel, color: color, token: "dm2VVI1A01G6iwYrfD5kBM5u")
+    withCredentials([string(credentialsId: 'slack-univerisity-pipelines', variable: 'SLACK_TOKEN')]) {
+        slackSend(message: message, channel: channel, color: color, token: env.SLACK_TOKEN)
+    }
 }
 
 timeout(time: 60, unit: 'MINUTES') {
@@ -27,7 +29,8 @@ timeout(time: 60, unit: 'MINUTES') {
         podTemplate(
                 label: label,
                 cloud: 'k8s-ci-cd',
-                inheritFrom: 'pod-base-configuration',
+                namespace: 'lae-jenkins',
+                inheritFrom: 'pod-base-configuration-with-dind',
                 containers: [
                     containerTemplate(name: 'gradle',
                         image: 'gradle:6.4-jdk8',
