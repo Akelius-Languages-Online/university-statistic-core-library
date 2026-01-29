@@ -18,12 +18,6 @@ properties([
         [$class: 'JobPropertyImpl', throttle: [count: 4, durationName: 'hour', userBoost: true]]
 ])
 
-def notifyOnSlack(String message, String channel, String color) {
-    withCredentials([string(credentialsId: 'slack-univerisity-pipelines', variable: 'SLACK_TOKEN')]) {
-        slackSend(message: message, channel: channel, color: color, token: env.SLACK_TOKEN)
-    }
-}
-
 timeout(time: 60, unit: 'MINUTES') {
     timestamps {
         podTemplate(
