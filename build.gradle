@@ -7,17 +7,10 @@ repositories {
     mavenLocal()
     maven {
         credentials {
-            username System.getenv("ARTIFACTORY_USERNAME")
-            password System.getenv("ARTIFACTORY_PASSWORD")
+            username "akeliuseducation"
+            password System.getenv("AZURE_ARTIFACTS_PASSWORD")
         }
-        url "${artifactory_context_url}/libs-release"
-    }
-    maven {
-        credentials {
-            username System.getenv("ARTIFACTORY_USERNAME")
-            password System.getenv("ARTIFACTORY_PASSWORD")
-        }
-        url "${artifactory_context_url}/libs-snapshot"
+        url "https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1"
     }
     mavenCentral()
 }
@@ -26,10 +19,10 @@ publishing {
     repositories {
         maven {
             credentials {
-                username System.getenv("ARTIFACTORY_USERNAME")
-                password System.getenv("ARTIFACTORY_PASSWORD")
+                username "akeliuseducation"
+                password System.getenv("AZURE_ARTIFACTS_PASSWORD")
             }
-            url = "${artifactory_context_url}/libs-release-local"
+            url = "https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1"
         }
     }
 }

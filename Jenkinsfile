@@ -51,12 +51,11 @@ timeout(time: 60, unit: 'MINUTES') {
                     stage('Test') {
                         currentStage = 'Test'
                         container('gradle') {
-                            withCredentials([usernamePassword(credentialsId: 'artifactory.lae', passwordVariable: 'ARTIFACTORY_PASSWORD', usernameVariable: 'ARTIFACTORY_USERNAME')]) {
-                                sh "echo ${ARTIFACTORY_PASSWORD} > artifactoryPw"
-                                sh "echo ${ARTIFACTORY_USERNAME} > artifactoryUser"
-                                sh "export ARTIFACTORY_PASSWORD=\$(cat artifactoryPw) && export ARTIFACTORY_USERNAME=\$(cat artifactoryUser)"
+                            withCredentials([usernamePassword(credentialsId: 'azure-artifacts-manager', passwordVariable: 'AZURE_ARTIFACTS_PASSWORD')]) {
+                                sh "echo ${AZURE_ARTIFACTS_PASSWORD} > artifactsPw"
+                                sh "export AZURE_ARTIFACTS_PASSWORD=\$(cat artifactsPw)"
                                 sh "gradle clean allTests --stacktrace --info"
-                                sh "rm artifactoryPw && rm artifactoryUser"
+                                sh "rm artifactsPw"
                             }
                         }
                     }
@@ -65,13 +64,12 @@ timeout(time: 60, unit: 'MINUTES') {
                         stage('Deploy Artifact') {
                             currentStage = 'Deploy Artifact'
                             container('gradle') {
-                                withCredentials([usernamePassword(credentialsId: 'artifactory.lae', passwordVariable: 'ARTIFACTORY_PASSWORD', usernameVariable: 'ARTIFACTORY_USERNAME')]) {
-                                    sh "echo ${ARTIFACTORY_PASSWORD} > artifactoryPw"
-                                    sh "echo ${ARTIFACTORY_USERNAME} > artifactoryUser"
-                                    sh "export ARTIFACTORY_PASSWORD=\$(cat artifactoryPw) && export ARTIFACTORY_USERNAME=\$(cat artifactoryUser)"
+                                withCredentials([usernamePassword(credentialsId: 'azure-artifacts-manager', passwordVariable: 'AZURE_ARTIFACTS_PASSWORD')]) {
+                                    sh "echo ${AZURE_ARTIFACTS_PASSWORD} > artifactsPw"
+                                    sh "export AZURE_ARTIFACTS_PASSWORD=\$(cat artifactsPw)"
 
                                     sh "gradle clean publish -PbuildVersion=${currentBuild.startTimeInMillis} --stacktrace"
-                                    sh "rm artifactoryPw && rm artifactoryUser"
+                                    sh "rm artifactsPw"
                                 }
                                 archiveArtifacts artifacts: '**/build/libs/*.jar', fingerprint: true
                             }
