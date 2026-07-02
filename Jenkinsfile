@@ -57,7 +57,7 @@ timeout(time: 60, unit: 'MINUTES') {
                         }
                     }
 
-                    if (env.BRANCH_NAME == "master") {
+                    if (env.BRANCH_NAME == "azure_artifacts") { // TODO
                         stage('Deploy Artifact') {
                             currentStage = 'Deploy Artifact'
                             container('gradle') {
