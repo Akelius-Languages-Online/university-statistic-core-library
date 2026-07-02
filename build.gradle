@@ -5,22 +5,24 @@ plugins {
 
 repositories {
     maven {
-        credentials {
-            username "akeliuseducation"
-            password System.getenv("AZURE_ARTIFACTS_PASSWORD")
+        url 'https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1'
+        name 'akeliuseducation'
+        credentials(PasswordCredentials)
+        authentication {
+            basic(BasicAuthentication)
         }
-        url "https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1"
     }
 }
 
 publishing {
     repositories {
         maven {
-            credentials {
-                username "akeliuseducation"
-                password System.getenv("AZURE_ARTIFACTS_PASSWORD")
+            url 'https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1'
+            name 'akeliuseducation'
+            credentials(PasswordCredentials)
+            authentication {
+                basic(BasicAuthentication)
             }
-            url = "https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1"
         }
     }
 }
