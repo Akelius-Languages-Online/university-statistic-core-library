@@ -3,6 +3,21 @@ plugins {
     id 'maven-publish'
 }
 
+buildscript {
+    repositories {
+        maven {
+            url = uri("https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1")
+            credentials {
+                username = "akeliuseducation"
+                password = System.getenv("AZURE_ARTIFACTS_PASSWORD")
+            }
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+    }
+}
+
 repositories {
     maven {
         url = uri("https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1")
