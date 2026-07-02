@@ -3,8 +3,8 @@ buildscript {
         maven {
             url = uri("https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1")
             credentials {
-                username = findProperty("akeliuseducationUsername")
-                password = findProperty("akeliuseducationPassword")
+                username = project.findProperty("akeliuseducationUsername") ?: System.getenv("ORG_GRADLE_PROJECT_akeliuseducationUsername") ?: "akeliuseducation"
+                password = project.findProperty("akeliuseducationPassword") ?: System.getenv("ORG_GRADLE_PROJECT_akeliuseducationPassword") ?: System.getenv("AZURE_ARTIFACTS_PASSWORD")
             }
             authentication {
                 basic(BasicAuthentication)
@@ -22,8 +22,8 @@ repositories {
     maven {
         url = uri("https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1")
         credentials {
-            username = findProperty("akeliuseducationUsername")
-            password = findProperty("akeliuseducationPassword")
+            username = project.findProperty("akeliuseducationUsername") ?: System.getenv("ORG_GRADLE_PROJECT_akeliuseducationUsername") ?: "akeliuseducation"
+            password = project.findProperty("akeliuseducationPassword") ?: System.getenv("ORG_GRADLE_PROJECT_akeliuseducationPassword") ?: System.getenv("AZURE_ARTIFACTS_PASSWORD")
         }
         authentication {
             basic(BasicAuthentication)
@@ -36,8 +36,8 @@ publishing {
         maven {
             url = uri("https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1")
             credentials {
-                username = findProperty("akeliuseducationUsername")
-                password = findProperty("akeliuseducationPassword")
+                username = project.findProperty("akeliuseducationUsername") ?: System.getenv("ORG_GRADLE_PROJECT_akeliuseducationUsername") ?: "akeliuseducation"
+                password = project.findProperty("akeliuseducationPassword") ?: System.getenv("ORG_GRADLE_PROJECT_akeliuseducationPassword") ?: System.getenv("AZURE_ARTIFACTS_PASSWORD")
             }
             authentication {
                 basic(BasicAuthentication)
