@@ -1,5 +1,1 @@
-pluginManagement {
-    akeliuseducationUsername = 'akeliuseducation'
-    akeliuseducationPassword = System.getenv("AZURE_ARTIFACTS_PASSWORD")
-}
 rootProject.name = 'university-statistic-core-library'
