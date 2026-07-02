@@ -3,8 +3,8 @@ pluginManagement {
         maven {
             url = uri("https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1")
             credentials {
-                username = "akeliuseducation"
-                password = System.getenv("AZURE_ARTIFACTS_PASSWORD")
+                username = settings.findProperty("akeliuseducationUsername")
+                password = settings.findProperty("akeliuseducationPassword")
             }
             authentication {
                 basic(BasicAuthentication)

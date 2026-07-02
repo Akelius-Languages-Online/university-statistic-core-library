@@ -52,7 +52,12 @@ timeout(time: 60, unit: 'MINUTES') {
                         currentStage = 'Test'
                         container('gradle') {
                             withCredentials([usernamePassword(credentialsId: 'azure-artifacts-manager', passwordVariable: 'AZURE_ARTIFACTS_PASSWORD', usernameVariable: 'AZURE_ARTIFACTS_EMAIL')]) {
-                                sh "gradle clean allTests --stacktrace --info"
+                                withEnv([
+                                    'ORG_GRADLE_PROJECT_akeliuseducationUsername=akeliuseducation',
+                                    "ORG_GRADLE_PROJECT_akeliuseducationPassword=${AZURE_ARTIFACTS_PASSWORD}"
+                                ]) {
+                                    sh "gradle clean allTests --stacktrace --info"
+                                }
                             }
                         }
                     }
@@ -62,7 +67,12 @@ timeout(time: 60, unit: 'MINUTES') {
                             currentStage = 'Deploy Artifact'
                             container('gradle') {
                                 withCredentials([usernamePassword(credentialsId: 'azure-artifacts-manager', passwordVariable: 'AZURE_ARTIFACTS_PASSWORD', usernameVariable: 'AZURE_ARTIFACTS_EMAIL')]) {
-                                    sh "gradle clean publish -PbuildVersion=${currentBuild.startTimeInMillis} --stacktrace"
+                                    withEnv([
+                                        'ORG_GRADLE_PROJECT_akeliuseducationUsername=akeliuseducation',
+                                        "ORG_GRADLE_PROJECT_akeliuseducationPassword=${AZURE_ARTIFACTS_PASSWORD}"
+                                    ]) {
+                                        sh "gradle clean publish -PbuildVersion=${currentBuild.startTimeInMillis} --stacktrace"
+                                    }
                                 }
                                 archiveArtifacts artifacts: '**/build/libs/*.jar', fingerprint: true
                             }

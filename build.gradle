@@ -3,8 +3,8 @@ buildscript {
         maven {
             url = uri("https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1")
             credentials {
-                username = "akeliuseducation"
-                password = System.getenv("AZURE_ARTIFACTS_PASSWORD")
+                username = findProperty("akeliuseducationUsername")
+                password = findProperty("akeliuseducationPassword")
             }
             authentication {
                 basic(BasicAuthentication)
@@ -22,8 +22,8 @@ repositories {
     maven {
         url = uri("https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1")
         credentials {
-            username = "akeliuseducation"
-            password = System.getenv("AZURE_ARTIFACTS_PASSWORD")
+            username = findProperty("akeliuseducationUsername")
+            password = findProperty("akeliuseducationPassword")
         }
         authentication {
             basic(BasicAuthentication)
@@ -36,8 +36,8 @@ publishing {
         maven {
             url = uri("https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1")
             credentials {
-                username = "akeliuseducation"
-                password = System.getenv("AZURE_ARTIFACTS_PASSWORD")
+                username = findProperty("akeliuseducationUsername")
+                password = findProperty("akeliuseducationPassword")
             }
             authentication {
                 basic(BasicAuthentication)
