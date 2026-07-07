@@ -1,24 +1,7 @@
-buildscript {
-    repositories {
-        maven {
-            url 'https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1'
-            name 'akeliuseducation'
-            credentials {
-                username = 'akeliuseducation'
-                password = System.getenv("AZURE_ARTIFACTS_PASSWORD")
-            }
-            authentication {
-                basic(BasicAuthentication)
-            }
-        }
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21"
-    }
+plugins {
+    id 'org.jetbrains.kotlin.multiplatform' version '1.5.21'
+    id 'maven-publish'
 }
-
-apply plugin: 'org.jetbrains.kotlin.multiplatform'
-apply plugin: 'maven-publish'
 
 repositories {
     maven {
