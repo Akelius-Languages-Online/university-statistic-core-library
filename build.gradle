@@ -1,10 +1,11 @@
 buildscript {
     repositories {
         maven {
-            url = uri("https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1")
+            url 'https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1'
+            name 'akeliuseducation'
             credentials {
-                username = project.findProperty("akeliuseducationUsername") ?: System.getenv("ORG_GRADLE_PROJECT_akeliuseducationUsername") ?: "akeliuseducation"
-                password = project.findProperty("akeliuseducationPassword") ?: System.getenv("ORG_GRADLE_PROJECT_akeliuseducationPassword") ?: System.getenv("AZURE_ARTIFACTS_PASSWORD")
+                username = 'akeliuseducation'
+                password = System.getenv("AZURE_ARTIFACTS_PASSWORD")
             }
             authentication {
                 basic(BasicAuthentication)
@@ -21,10 +22,11 @@ apply plugin: 'maven-publish'
 
 repositories {
     maven {
-        url = uri("https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1")
+        url 'https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1'
+        name 'akeliuseducation'
         credentials {
-            username = project.findProperty("akeliuseducationUsername") ?: System.getenv("ORG_GRADLE_PROJECT_akeliuseducationUsername") ?: "akeliuseducation"
-            password = project.findProperty("akeliuseducationPassword") ?: System.getenv("ORG_GRADLE_PROJECT_akeliuseducationPassword") ?: System.getenv("AZURE_ARTIFACTS_PASSWORD")
+            username = 'akeliuseducation'
+            password = System.getenv("AZURE_ARTIFACTS_PASSWORD")
         }
         authentication {
             basic(BasicAuthentication)
@@ -35,10 +37,11 @@ repositories {
 publishing {
     repositories {
         maven {
-            url = uri("https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1")
+            url 'https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1'
+            name 'akeliuseducation'
             credentials {
-                username = project.findProperty("akeliuseducationUsername") ?: System.getenv("ORG_GRADLE_PROJECT_akeliuseducationUsername") ?: "akeliuseducation"
-                password = project.findProperty("akeliuseducationPassword") ?: System.getenv("ORG_GRADLE_PROJECT_akeliuseducationPassword") ?: System.getenv("AZURE_ARTIFACTS_PASSWORD")
+                username = 'akeliuseducation'
+                password = System.getenv("AZURE_ARTIFACTS_PASSWORD")
             }
             authentication {
                 basic(BasicAuthentication)

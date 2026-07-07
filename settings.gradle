@@ -1,10 +1,11 @@
 pluginManagement {
     repositories {
         maven {
-            url = uri("https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1")
+            url 'https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1'
+            name 'akeliuseducation'
             credentials {
-                username = System.getProperty("akeliuseducationUsername") ?: System.getenv("ORG_GRADLE_PROJECT_akeliuseducationUsername") ?: "akeliuseducation"
-                password = System.getProperty("akeliuseducationPassword") ?: System.getenv("ORG_GRADLE_PROJECT_akeliuseducationPassword") ?: System.getenv("AZURE_ARTIFACTS_PASSWORD")
+                username = 'akeliuseducation'
+                password = System.getenv("AZURE_ARTIFACTS_PASSWORD")
             }
             authentication {
                 basic(BasicAuthentication)
