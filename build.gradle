@@ -8,8 +8,8 @@ repositories {
         url 'https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1'
         name 'akeliuseducation'
         credentials {
-            username = 'akeliuseducation'
-            password = System.getenv("AZURE_ARTIFACTS_PASSWORD")
+            username 'akeliuseducation'
+            password System.getenv("AZURE_ARTIFACTS_PASSWORD")
         }
         authentication {
             basic(BasicAuthentication)
@@ -23,8 +23,8 @@ publishing {
             url 'https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1'
             name 'akeliuseducation'
             credentials {
-                username = 'akeliuseducation'
-                password = System.getenv("AZURE_ARTIFACTS_PASSWORD")
+                username 'akeliuseducation'
+                password System.getenv("AZURE_ARTIFACTS_PASSWORD")
             }
             authentication {
                 basic(BasicAuthentication)
