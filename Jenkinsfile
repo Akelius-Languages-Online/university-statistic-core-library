@@ -52,7 +52,7 @@ timeout(time: 60, unit: 'MINUTES') {
                         currentStage = 'Test'
                         container('gradle') {
                             withCredentials([usernamePassword(credentialsId: 'azure-artifacts-manager', passwordVariable: 'AZURE_ARTIFACTS_PASSWORD', usernameVariable: 'AZURE_ARTIFACTS_EMAIL')]) {
-                                sh "gradle clean allTests --stacktrace --info"
+                                sh "./gradlew clean allTests --stacktrace --info"
                             }
                         }
                     }
@@ -62,7 +62,7 @@ timeout(time: 60, unit: 'MINUTES') {
                             currentStage = 'Deploy Artifact'
                             container('gradle') {
                                 withCredentials([usernamePassword(credentialsId: 'azure-artifacts-manager', passwordVariable: 'AZURE_ARTIFACTS_PASSWORD', usernameVariable: 'AZURE_ARTIFACTS_EMAIL')]) {
-                                    sh "gradle clean publish -PbuildVersion=${currentBuild.startTimeInMillis} --stacktrace"
+                                    sh "./gradlew clean publish -PbuildVersion=${currentBuild.startTimeInMillis} --stacktrace"
                                 }
                                 archiveArtifacts artifacts: '**/build/libs/*.jar', fingerprint: true
                             }
