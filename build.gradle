@@ -5,8 +5,8 @@ plugins {
 
 repositories {
     maven {
-        url 'https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1'
-        name 'akeliuseducation'
+        url 'https://pkgs.dev.azure.com/akeliuseducation/_packaging/artifacts_feed/maven/v1'
+        name 'artifacts_feed'
         credentials {
             username 'akeliuseducation'
             password System.getenv("AZURE_ARTIFACTS_PASSWORD")
@@ -20,8 +20,8 @@ repositories {
 publishing {
     repositories {
         maven {
-            url 'https://pkgs.dev.azure.com/akeliuseducation/_packaging/akeliuseducation/maven/v1'
-            name 'akeliuseducation'
+            url 'https://pkgs.dev.azure.com/akeliuseducation/_packaging/artifacts_feed/maven/v1'
+            name 'artifacts_feed'
             credentials {
                 username 'akeliuseducation'
                 password System.getenv("AZURE_ARTIFACTS_PASSWORD")
