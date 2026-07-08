@@ -4,32 +4,31 @@ plugins {
 }
 
 repositories {
-    mavenLocal()
     maven {
+        url 'https://pkgs.dev.azure.com/akeliuseducation/_packaging/artifacts_feed/maven/v1'
+        name 'artifacts_feed'
         credentials {
-            username System.getenv("ARTIFACTORY_USERNAME")
-            password System.getenv("ARTIFACTORY_PASSWORD")
+            username 'akeliuseducation'
+            password System.getenv("AZURE_ARTIFACTS_PASSWORD")
         }
-        url "${artifactory_context_url}/libs-release"
-    }
-    maven {
-        credentials {
-            username System.getenv("ARTIFACTORY_USERNAME")
-            password System.getenv("ARTIFACTORY_PASSWORD")
+        authentication {
+            basic(BasicAuthentication)
         }
-        url "${artifactory_context_url}/libs-snapshot"
     }
-    mavenCentral()
 }
 
 publishing {
     repositories {
         maven {
+            url 'https://pkgs.dev.azure.com/akeliuseducation/_packaging/artifacts_feed/maven/v1'
+            name 'artifacts_feed'
             credentials {
-                username System.getenv("ARTIFACTORY_USERNAME")
-                password System.getenv("ARTIFACTORY_PASSWORD")
+                username 'akeliuseducation'
+                password System.getenv("AZURE_ARTIFACTS_PASSWORD")
             }
-            url = "${artifactory_context_url}/libs-release-local"
+            authentication {
+                basic(BasicAuthentication)
+            }
         }
     }
 }

@@ -51,12 +51,8 @@ timeout(time: 60, unit: 'MINUTES') {
                     stage('Test') {
                         currentStage = 'Test'
                         container('gradle') {
-                            withCredentials([usernamePassword(credentialsId: 'artifactory.lae', passwordVariable: 'ARTIFACTORY_PASSWORD', usernameVariable: 'ARTIFACTORY_USERNAME')]) {
-                                sh "echo ${ARTIFACTORY_PASSWORD} > artifactoryPw"
-                                sh "echo ${ARTIFACTORY_USERNAME} > artifactoryUser"
-                                sh "export ARTIFACTORY_PASSWORD=\$(cat artifactoryPw) && export ARTIFACTORY_USERNAME=\$(cat artifactoryUser)"
-                                sh "gradle clean allTests --stacktrace --info"
-                                sh "rm artifactoryPw && rm artifactoryUser"
+                            withCredentials([usernamePassword(credentialsId: 'azure-artifacts-manager', passwordVariable: 'AZURE_ARTIFACTS_PASSWORD', usernameVariable: 'AZURE_ARTIFACTS_EMAIL')]) {
+                                sh "./gradlew clean allTests --stacktrace --info"
                             }
                         }
                     }
@@ -65,13 +61,8 @@ timeout(time: 60, unit: 'MINUTES') {
                         stage('Deploy Artifact') {
                             currentStage = 'Deploy Artifact'
                             container('gradle') {
-                                withCredentials([usernamePassword(credentialsId: 'artifactory.lae', passwordVariable: 'ARTIFACTORY_PASSWORD', usernameVariable: 'ARTIFACTORY_USERNAME')]) {
-                                    sh "echo ${ARTIFACTORY_PASSWORD} > artifactoryPw"
-                                    sh "echo ${ARTIFACTORY_USERNAME} > artifactoryUser"
-                                    sh "export ARTIFACTORY_PASSWORD=\$(cat artifactoryPw) && export ARTIFACTORY_USERNAME=\$(cat artifactoryUser)"
-
-                                    sh "gradle clean publish -PbuildVersion=${currentBuild.startTimeInMillis} --stacktrace"
-                                    sh "rm artifactoryPw && rm artifactoryUser"
+                                withCredentials([usernamePassword(credentialsId: 'azure-artifacts-manager', passwordVariable: 'AZURE_ARTIFACTS_PASSWORD', usernameVariable: 'AZURE_ARTIFACTS_EMAIL')]) {
+                                    sh "./gradlew clean publish -PbuildVersion=${currentBuild.startTimeInMillis} --stacktrace"
                                 }
                                 archiveArtifacts artifacts: '**/build/libs/*.jar', fingerprint: true
                             }
