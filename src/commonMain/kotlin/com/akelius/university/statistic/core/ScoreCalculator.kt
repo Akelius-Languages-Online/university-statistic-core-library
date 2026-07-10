@@ -37,6 +37,7 @@ class ScoreCalculator {
 
     companion object {
         const val calculationPrecision = 0.00000001
+        val multipleTests = listOf("final_test_writing", "final_test_grammar", "final_test_vocabulary")
         internal val gradeCalculator = GradeCalculator()
     }
 
@@ -52,26 +53,39 @@ class ScoreCalculator {
 
         val scaledScore = calculateScaledScore(calculation.userScore, calculation.maxScore)
 
-        val scoreInFifths = gradeCalculator.scoreToFifths(
-            calculationType, if (calculationType == CalculationType.MISTAKE) {
-                calculateMistakes(score).toDouble()
-            } else {
-                scaledScore
-            }
-        )
-        return SlideshowScoreResult(
-            score = scoreInFifths,
-            scaledScore = scaledScore,
-            correctAnswersCount = calculation.correctAnswersCount,
-            totalAnswersCount = calculation.totalAnswers
-        )
+        if(score.type.lowercase() in multipleTests) {
+            return SlideshowScoreResult(
+                score = if((scaledScore * 100).toInt() > 80) 5 else 0,
+                scaledScore = scaledScore,
+                correctAnswersCount = calculation.correctAnswersCount,
+                totalAnswersCount = calculation.totalAnswers
+            )
+        } else {
+            val scoreInFifths = gradeCalculator.scoreToFifths(
+                calculationType, if (calculationType == CalculationType.MISTAKE) {
+                    calculateMistakes(score).toDouble()
+                } else {
+                    scaledScore
+                }
+            )
+            return SlideshowScoreResult(
+                score = scoreInFifths,
+                scaledScore = scaledScore,
+                correctAnswersCount = calculation.correctAnswersCount,
+                totalAnswersCount = calculation.totalAnswers
+            )
+        }
     }
 
     private fun calculationFormula(
         score: SlideshowScore,
         countInteractions: Int
     ) = if (score.isQuiz) {
-        CalculationType.QUIZ
+        if(score.type in multipleTests) {
+            CalculationType.QUIZ_MULTIPLE
+        } else {
+            CalculationType.QUIZ
+        }
     } else if (countInteractions in 2..19) {
         CalculationType.MISTAKE
     } else if (countInteractions == 0) {

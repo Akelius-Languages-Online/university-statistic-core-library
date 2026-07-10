@@ -150,6 +150,43 @@ class ScoreCalculatorTest {
     }
 
     @Test
+    fun quizMultipleTestsScoreCalculatedCorrectly() {
+        val slideshowScore = SlideshowScore(
+            slideScores = listOf(
+                SlideScore(isCorrect = false, score = 0.0, weight = 1.0),
+                SlideScore(isCorrect = false, score = 0.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+
+                SlideScore(isCorrect = false, score = 0.0, weight = 1.0),
+                SlideScore(isCorrect = false, score = 0.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+
+                SlideScore(isCorrect = false, score = 0.0, weight = 1.0),
+                SlideScore(isCorrect = false, score = 0.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+
+                SlideScore(isCorrect = false, score = 0.0, weight = 1.0),
+                SlideScore(isCorrect = false, score = 0.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0),
+                SlideScore(isCorrect = true, score = 1.0, weight = 1.0)
+            ), true, "TEST_GRAMMAR"
+        )
+
+        val result = calculator.calculate(slideshowScore)
+        assertEquals(5, result.score)
+        assertEquals(20, result.totalAnswersCount)
+        assertEquals(12, result.correctAnswersCount)
+        assertEquals(0.6, result.scaledScore)
+    }
+
+    @Test
     fun defaultWeightsCalculationFailure() {
         val slideshowScore = SlideshowScore(
             listOf(
